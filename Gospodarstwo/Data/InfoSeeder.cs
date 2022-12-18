@@ -2,14 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Gospodarstwo.Models;
-using static Humanizer.In;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Security.Cryptography;
 using Microsoft.AspNetCore.SignalR;
 using static System.Net.Mime.MediaTypeNames;
 using System.Numerics;
-using Humanizer.Localisation;
-using Humanizer;
 using Info.Data;
 using System.Runtime.Intrinsics.Arm;
 using System.Threading;
@@ -32,8 +29,9 @@ namespace Info.Data
                     SeedUsers(dbContext);
                     SeedCategoris(dbContext);
                     SeedUnits(dbContext);
-                    SeedTexts(dbContext);
                     SeedOpinions(dbContext);
+                    SeedTexts(dbContext);
+
                 }
         }
 
@@ -164,9 +162,7 @@ namespace Info.Data
                 for (int i = 1; i <= 5; i++) //sześć kategorii
                 {
                     var idUzytkownika1 = dbContext.AppUsers
-                    .Where(u => u.UserName == "autor1@portal.pl")
-                    .FirstOrDefault()
-                    .Id;
+                    .Where(u => u.UserName == "autor1@portal.pl").FirstOrDefault().Id;
 
                     for (int j = 0; j <= 4; j++) //teksty autora1
                     {
@@ -228,24 +224,22 @@ namespace Info.Data
                         Content = "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
                         AddedDate = DateTime.Now.AddDays(-i),
                         Id = idUzytkownika1,
-                        ItemId = i,
+                        ItemId = i + 3,
                     };
                     dbContext.Set<Note>().Add(komentarz);
                 }
                 dbContext.SaveChanges();
 
-                var idUzytkownika2 = dbContext.AppUsers
-                .Where(u => u.UserName == "autor1@portal.pl").FirstOrDefault()
-                .Id;
+                var idUzytkownika2 = dbContext.AppUsers.Where(u => u.UserName == "autor1@portal.pl").FirstOrDefault().Id;
 
-                for (int i = 1; i <= 60; i++)
+                for (int i = 1; i <= 40; i++)
                 {
                     var komentarz = new Note()
                     {
                         Content = "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.",
                         AddedDate = DateTime.Now.AddDays(-i),
                         Id = idUzytkownika2,
-                        ItemId = i,
+                        ItemId = i + 3,
                     };
                     dbContext.Set<Note>().Add(komentarz);
                 }
