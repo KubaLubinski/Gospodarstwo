@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Gospodarstwo.Data;
 using Gospodarstwo.Models;
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gospodarstwo.Controllers
 {
+    [Authorize(Roles = "admin, author" )]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -44,6 +47,7 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Categories/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
@@ -52,20 +56,30 @@ namespace Gospodarstwo.Controllers
         // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CategoryId,CategoryName,Description,Active,Display")] Category category)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if(!CategoryNameExists(category.CategoryName))
+                {
+                    _context.Add(category);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Kategoria o takiej nazwie już istnieje";
+                    return View("Create");
+                }
             }
             return View(category);
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Categories == null)
@@ -84,6 +98,7 @@ namespace Gospodarstwo.Controllers
         // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CategoryId,CategoryName,Description,Active,Display")] Category category)
@@ -117,6 +132,7 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Categories == null)
@@ -131,10 +147,16 @@ namespace Gospodarstwo.Controllers
                 return NotFound();
             }
 
+            if (ItemsInCategory(id)) 
+            {
+                ViewBag.DeleteMessage = "Nie można usunąć wybranej kategorii, gdyż posiada przypisane teksty.";
+            }
+
             return View(category);
         }
 
         // POST: Categories/Delete/5
+        [Authorize(Roles = "admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -156,6 +178,15 @@ namespace Gospodarstwo.Controllers
         private bool CategoryExists(int id)
         {
           return _context.Categories.Any(e => e.CategoryId == id);
+        }
+        private bool CategoryNameExists(string? name)
+        {
+            return (_context.Categories?.Any(e => e.CategoryName ==
+            name)).GetValueOrDefault();
+        }
+        private bool ItemsInCategory(int? id)
+        {
+            return (_context.Items?.Any(t => t.CategoryId == id)).GetValueOrDefault();
         }
     }
 }
