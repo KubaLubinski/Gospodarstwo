@@ -31,7 +31,7 @@ namespace Gospodarstwo.Models
         [Required]
         [Display(Name = "Data dodania")]
         [DataType(DataType.Date, ErrorMessage = "Niepoprawny format daty")]
-        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy")]
+        [DisplayFormat(DataFormatString = "{0:dd.MM.yyyy}")]
         public System.DateTime AddedDate { get; set; }
 
         [Display(Name = "Kategoria tekstu:")]

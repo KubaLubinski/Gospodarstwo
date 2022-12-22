@@ -1,89 +1,108 @@
-﻿@model IEnumerable<Gospodarstwo.Models.Item>
-
+﻿@model ItemsViewModel
 @{
-    ViewData["Title"] = "Index";
+ ViewData["Title"] = "Lista przedmiotów";
 }
 
-<h1>Index</h1>
+div class="container">
+    <div class="row">
+        <!--wyszukiwarka-->
+        <div class="d-none d-md-block col-md-12 col-xl-3">
+            <div class="card mt-2 shadow-sm">
+                <div class="card-body">
+                    @using(Html.BeginForm("Index", "Items", new { PageNumber = "1" }, FormMethod.Get))
+                    {
+                        <div class="row gt-3">
+                            <div class="form-group col-auto">
+                                <label for="Kategoria">Kategoria:</label>
+                                @Html.DropDownList("Kategoria", ViewBag.Category, "---wszystkie---",htmlAttributes: new{@class = "form-control"})
+                            </div>
+                            <div class="form-group col-auto">
+                                <label for="Autor">Autor:</label>
+                                @Html.DropDownList("Autor", ViewBag.Author, "---wszyscy---",htmlAttributes: new{@class = "form-control"})
+                            </div>
+                            <div class="form-group col-auto">
+                                <label for="Fraza">Fraza:</label>
+                                <input type="text" class="form-control" id="Fraza" name="Fraza" placeholder="Szukany ciąg" value="@Model.ItemsView.Phrase">
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-4 col-auto">Filtruj</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ItemName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Graphic)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Active)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AddedDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ItemQuantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MaxStoreCapacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Unit)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Graphic)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Active)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AddedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemQuantity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.MaxStoreCapacity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Unit.UnitName)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+        <!--lista tekstow-->
+            <div class="col-xl-9">
+            @if (Model.ItemsView.ItemCount > 0)
+            {
+                @foreach (var item in Model.Items)
+                {
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="oswald text-primary">@item.ItemName</h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <img src="@Url.Content(item.Graphic == null ? "~/img/mini/"+item.CategoryId+".jpg" : "~/img/mini"+item.Graphic)" alt="@item.Category.CategoryName" class="img-fluid" />
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title text-success">@item.User.FullName</h5>
+                                    <p class="card-text"><small class="text-muted">Opublikowano: @item.AddedDate</small></p>
+                                    <div class="position-relative">
+                                        <a href="@Url.Action("Details", "Items", new{id = item.ItemId})" class="btn btn-outline-primary position-absolute bottom-0 end-0">Czytaj >>></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-info d-flex align-items-center mt-2" role="alert">
+                <i class="bi bi-info-circle-fill me-3"></i>
+                Brak tekstów do wyświetlenia. Zmień parametry wyszukiwania.
+                </div>
+            }
+
+            </div>
+
+
+    </div>
+
+    <!--Stronicowanie-->
+    <div class="row mt-3">
+        <nav aria-label="Nawigacja pomiędzy kolejnymi stronami">
+            <ul class="pagination">
+                @{
+                    if(Model.ItemsView.PageNumber > 1)
+                    {
+                                    <li class="page-item">
+                                        <a class="page-link" href="@Url.Action("Index", "Items", new{PageNumber = Model.ItemsView.PageNumber - 1,
+                                    Kategoria = Model.ItemsView.Category, Autor = Model.ItemsView.Author, Fraza = Model.ItemsView.Phrase})">Poprzednia</a>"
+                                    </li>
+                    }
+                    for (var i = 1; i<=Model.ItemsView.PageCount; i++)
+                    {
+                                <li class="@(i == Model.ItemsView.PageNumber ? "page-item active" : "page-active")">
+                                    <a class="page-link" href="@Url.Action("Index", "Items", new{PageNumber = 1, 
+                                Kategoria = Model.ItemsView.Category, Autor = Model.ItemsView.Author, Fraza = Model.ItemsView.Phrase})">@i</a>
+                                </li>
+                    }
+                    if(Model.ItemsView.PageNumber < Model.ItemsView.PageCount)
+                    {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Index", "Items", new{PageNumber = Model.ItemsView.PageNumber + 1, 
+                                Kategoria = Model.ItemsView.Category, Autor = Model.ItemsView.Author, Fraza = Model.ItemsView.Phrase})">Następna</a>
+                                </li>
+                    }
+                }
+            </ul>
+        </nav>
+    </div>
+
+</div>

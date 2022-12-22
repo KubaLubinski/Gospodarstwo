@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Gospodarstwo.Data;
 using Gospodarstwo.Models;
+using Gospodarstwo.Models.ViewModels;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Gospodarstwo.Controllers
 {
@@ -20,7 +22,56 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Items
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string Fraza, string Autor, int? Kategoria, int PageNumber = 1)
+        {
+            var SelectedItems = _context.Items?
+                .Include(t => t.Category)
+                .Include(t => t.User)
+                .Where(t => t.Active == true)
+                .OrderByDescending(t => t.AddedDate);
+
+            if (Kategoria != null)
+            {
+                SelectedItems = (IOrderedQueryable<Item>)SelectedItems.Where(r => r.Category.CategoryId == Kategoria);
+            }
+            if (!String.IsNullOrEmpty(Autor))
+            {
+                SelectedItems = (IOrderedQueryable<Item>)SelectedItems.Where(r => r.User.Id == Autor);
+            }
+            if (!String.IsNullOrEmpty(Fraza))
+            {
+                SelectedItems = (IOrderedQueryable<Item>)SelectedItems.Where(r => r.Content.Contains(Fraza));
+            }
+
+            ItemsViewModel itemsViewModel = new();
+            itemsViewModel.ItemsView = new ItemsView();
+
+            itemsViewModel.ItemsView.ItemCount = SelectedItems.Count();
+            itemsViewModel.ItemsView.PageNumber = PageNumber;
+            itemsViewModel.ItemsView.Author = Autor;
+            itemsViewModel.ItemsView.Phrase = Fraza;
+            itemsViewModel.ItemsView.Category = Kategoria;
+
+            itemsViewModel.Items = (IEnumerable<Item>?)await SelectedItems
+                .Skip((PageNumber - 1) * itemsViewModel.ItemsView.PageSize)
+                .Take(itemsViewModel.ItemsView.PageSize)
+                .ToListAsync();
+
+            ViewData["Category"] = new SelectList(_context.Categories
+                 .Where(c => c.Active == true),
+                 "Category", "CategoryName", Kategoria);
+
+            ViewData["Author"] = new SelectList(_context.Items
+                 .Include(u => u.User)
+                .Select(u => u.User)
+                .Distinct(),
+                 "Id", "FullName", Autor);
+
+            return View(itemsViewModel);
+        }
+
+        // GET: Items
+        public async Task<IActionResult> List()
         {
             var applicationDbContext = _context.Items.Include(i => i.Category).Include(i => i.Unit).Include(i => i.User);
             return View(await applicationDbContext.ToListAsync());
