@@ -9,6 +9,8 @@ using Gospodarstwo.Data;
 using Gospodarstwo.Models;
 using Gospodarstwo.Models.ViewModels;
 using static System.Net.Mime.MediaTypeNames;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Gospodarstwo.Controllers
 {
@@ -57,11 +59,11 @@ namespace Gospodarstwo.Controllers
                 .Take(itemsViewModel.ItemsView.PageSize)
                 .ToListAsync();
 
-            ViewData["Category"] = new SelectList(_context.Categories
+            ViewData["Category"] = new SelectList(_context.Categories?
                  .Where(c => c.Active == true),
-                 "Category", "CategoryName", Kategoria);
+                 "CategoryId", "CategoryName", Kategoria);
 
-            ViewData["Author"] = new SelectList(_context.Items
+            ViewData["Author"] = new SelectList(_context.Items?
                  .Include(u => u.User)
                 .Select(u => u.User)
                 .Distinct(),
@@ -71,6 +73,7 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Items
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> List()
         {
             var applicationDbContext = _context.Items.Include(i => i.Category).Include(i => i.Unit).Include(i => i.User);
@@ -103,7 +106,6 @@ namespace Gospodarstwo.Controllers
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
             ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName");
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id");
             return View();
         }
 
@@ -112,17 +114,20 @@ namespace Gospodarstwo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ItemId,ItemName,Content,Graphic,Active,AddedDate,CategoryId,Id,ItemQuantity,MaxStoreCapacity,UnitId")] Item item)
+        public async Task<IActionResult> Create([Bind("ItemId,ItemName,Content,Active,CategoryId,ItemQuantity,MaxStoreCapacity,UnitId")] Item item, IFormFile? picture)
         {
             if (ModelState.IsValid)
             {
+                item.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                item.AddedDate = DateTime.Now;
+
+
                 _context.Add(item);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", item.CategoryId);
             ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", item.UnitId);
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", item.Id);
             return View(item);
         }
 

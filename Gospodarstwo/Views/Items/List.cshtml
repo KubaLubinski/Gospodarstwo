@@ -1,15 +1,12 @@
 ﻿@model IEnumerable<Gospodarstwo.Models.Item>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista przedmiotów";
 }
 
-<h1>Index</h1>
+<h1 class="oswald text-primary">Przedmioty</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table" id="przedmioty">
     <thead>
         <tr>
             <th>
@@ -28,10 +25,10 @@
                 @Html.DisplayNameFor(model => model.AddedDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Category)
+                Kategoria:
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.User)
+                Autor:
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ItemQuantity)
@@ -52,10 +49,18 @@
                 @Html.DisplayFor(modelItem => item.ItemName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Content)
+                    @if (item.Content.Length <= 75)
+                    {
+                        @Html.DisplayFor(modelItem => item.Content)
+                    }
+                    else
+                    {
+                        @(item.Content.Substring(0, 75) + "...")
+                    }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Graphic)
+                    <img src="@Url.Content(item.Graphic == null ? "~/img/mini/zboze_m.jpg" :"~/img/mini/"+item.Graphic)" width="150" alt="@item.Category.CategoryName" />
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Active)
@@ -67,7 +72,7 @@
                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ItemQuantity)
@@ -79,11 +84,46 @@
                 @Html.DisplayFor(modelItem => item.Unit.UnitName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ItemId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ItemId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ItemId">Delete</a>
+                    <a class="btn btn-outline-primary rounded-circle my-1" title="Szczegóły"
+                   asp-action="Details" asp-route-id="@item.ItemId"><i class="bi-eye" arialabel="Treść tekstu"></i></a>
+                    <a class="btn btn-outline-warning rounded-circle my-1" title="Edycja" asp-action="Edit" asp-route-id="@item.ItemId"><i class="bi-pen-fill" arialabel="Edycja tekstu"></i></a>
+                    <a class="btn btn-outline-danger rounded-circle my-1" title="Usuwanie" asp-action="Delete" asp-route-id="@item.ItemId"><i class="bi-trash" arialabel="Usuwanie tekstu"></i></a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts{
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.13.1/datatables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#przedmioty').DataTable({
+                language: {
+                    "decimal": "",
+                    "emptyTable": "Brak danych do wyświetlenia",
+                    "info": " Pozycje od _START_ do _END_ z _TOTAL_ rekordów",
+                    "infoEmpty": "Pozycji 0 z 0 dostępnych",
+                    "infoFiltered": "(filtrowanie z _MAX_ dostępnych pozycji)",
+                    "infoPostFix": "",
+                    "thousands": " ",
+                    "lengthMenu": "Pokaż _MENU_ pozycji",
+                    "loadingRecords": "Ładowanie...",
+                    "processing": "Przetwarzanie...",
+                    "search": "Wyszukaj:",
+                    "zeroRecords": "Nie znaleziono danych",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "last": "Ostatnia",
+                        "next": "Następna",
+                        "previous": "Poprzednia"
+                    },
+                    "aria": {
+                        "sortAscending": ": sortuje kolumnę rosnąco",
+                        "sortDescending": ": sortuje kolumnę malejąco"
+                    }
+                }
+            });
+        });
+    </script>
+}
