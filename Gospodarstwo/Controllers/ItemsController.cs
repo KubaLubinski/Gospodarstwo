@@ -11,6 +11,7 @@ using Gospodarstwo.Models.ViewModels;
 using static System.Net.Mime.MediaTypeNames;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Gospodarstwo.Infrastrukture;
 
 namespace Gospodarstwo.Controllers
 {
@@ -18,9 +19,12 @@ namespace Gospodarstwo.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public ItemsController(ApplicationDbContext context)
+        private IWebHostEnvironment _hostEnvironment;
+
+        public ItemsController(ApplicationDbContext context, IWebHostEnvironment environment)
         {
             _context = context;
+            _hostEnvironment = environment;
         }
 
         // GET: Items
@@ -114,12 +118,30 @@ namespace Gospodarstwo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ItemId,ItemName,Content,Active,CategoryId,ItemQuantity,MaxStoreCapacity,UnitId")] Item item, IFormFile? picture)
+        public async Task<IActionResult> Create([Bind("ItemId,ItemName,Content,Active,CategoryId,ItemQuantity,MaxStoreCapacity,UnitId")] Item item, IFormFile? obrazek)
         {
             if (ModelState.IsValid)
             {
                 item.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 item.AddedDate = DateTime.Now;
+
+                //zapisanie obrazka i skalowanie
+                if (obrazek != null && obrazek.Length > 0)
+                {
+                    ImageFileUpload imageFileResult = new(_hostEnvironment);
+                    FileSendResult fileSendResult = imageFileResult.SendFile(obrazek, "img", 600);
+
+                    if (fileSendResult.Success)
+                    {
+                        item.Graphic = fileSendResult.Name;
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Wybrany plik nie jest obrazkiem!";
+                        ViewData["CategoryId"] = new SelectList(_context.Categories,"CategoryId", "Name", item.CategoryId);
+                        return View(item);
+                    }
+                }
 
 
                 _context.Add(item);
