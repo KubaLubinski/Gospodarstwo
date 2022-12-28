@@ -87,25 +87,39 @@ namespace Gospodarstwo.Controllers
         // GET: Items/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+
             if (id == null || _context.Items == null)
             {
                 return NotFound();
             }
 
-            var item = await _context.Items
+            ItemWithNotes itemWithNotes = new ItemWithNotes();
+
+            itemWithNotes.SelectedItem = await _context.Items
                 .Include(i => i.Category)
-                .Include(i => i.Unit)
                 .Include(i => i.User)
+                .Include(i => i.Notes)
+                .ThenInclude(c => c.User)
+                .Where(t => t.Active == true)
                 .FirstOrDefaultAsync(m => m.ItemId == id);
-            if (item == null)
+
+            if (itemWithNotes.SelectedItem == null)
             {
                 return NotFound();
             }
 
-            return View(item);
+            itemWithNotes.ReadingTime = (int)Math.Ceiling((double)itemWithNotes.SelectedItem.Content.Length / 1400);
+            itemWithNotes.CommentsNumber = _context.Notes
+                .Where(x => x.ItemId == id)
+                .Count();
+
+            itemWithNotes.Description = Variaty.Phrase("notatka", "notatki", "notatek", itemWithNotes.CommentsNumber);
+
+            return View(itemWithNotes);
         }
 
         // GET: Items/Create
+        [Authorize(Roles = "admin, author")]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
@@ -118,6 +132,7 @@ namespace Gospodarstwo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin, author")]
         public async Task<IActionResult> Create([Bind("ItemId,ItemName,Content,Active,CategoryId,ItemQuantity,MaxStoreCapacity,UnitId")] Item item, IFormFile? obrazek)
         {
             if (ModelState.IsValid)
@@ -154,6 +169,7 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Items/Edit/5
+        [Authorize(Roles = "admin, author")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Items == null)
@@ -177,6 +193,7 @@ namespace Gospodarstwo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin, author")]
         public async Task<IActionResult> Edit(int id, [Bind("ItemId,ItemName,Content,Graphic,Active,AddedDate,CategoryId,Id,ItemQuantity,MaxStoreCapacity,UnitId")] Item item)
         {
             if (id != item.ItemId)
@@ -211,6 +228,7 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Items/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Items == null)
@@ -234,6 +252,7 @@ namespace Gospodarstwo.Controllers
         // POST: Items/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Items == null)
