@@ -10,6 +10,8 @@ using Gospodarstwo.Models;
 using static System.Net.Mime.MediaTypeNames;
 using Microsoft.CodeAnalysis.Options;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace Gospodarstwo.Controllers
 {
@@ -23,13 +25,23 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Notes
-        public async Task<IActionResult> Index()
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Index(int? id)
         {
-            var applicationDbContext = _context.Notes.Include(n => n.Item).Include(n => n.User);
-            return View(await applicationDbContext.ToListAsync());
+            if (id == null)
+            {
+                var applicationDbContext = _context.Notes.Include(o => o.Item).Include(o => o.User);
+                return View(await applicationDbContext.ToListAsync());
+            }
+            else
+            {
+                var appDbContext = _context.Notes.Include(o => o.Item).Include(o => o.User).Where(o => o.ItemId == id);
+                return View(await appDbContext.ToListAsync());
+            }
         }
 
         // GET: Notes/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Notes == null)
@@ -50,6 +62,7 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Notes/Create
+        [Authorize]
         public IActionResult Create(int? id)
         {
             if (id == null)
@@ -71,6 +84,7 @@ namespace Gospodarstwo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("NoteId,Content,ItemId")] Note note)
         {
             if (ModelState.IsValid)
@@ -91,6 +105,7 @@ namespace Gospodarstwo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> CreatePartial([Bind("NoteId,Content,ItemId")] Note note)
         {
             if (ModelState.IsValid)
@@ -108,6 +123,7 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Notes/Edit/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Notes == null)
@@ -130,7 +146,8 @@ namespace Gospodarstwo.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("NoteId,Content,AddedDate,ItemId,Id")] Note note)
+        [Authorize(Roles = "admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("NoteId,Content")] Note note)
         {
             if (id != note.NoteId)
             {
@@ -163,6 +180,7 @@ namespace Gospodarstwo.Controllers
         }
 
         // GET: Notes/Delete/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Notes == null)
@@ -185,6 +203,7 @@ namespace Gospodarstwo.Controllers
         // POST: Notes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Notes == null)

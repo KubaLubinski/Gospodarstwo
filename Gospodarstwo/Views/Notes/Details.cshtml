@@ -1,42 +1,45 @@
 ﻿@model Gospodarstwo.Models.Note
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Szczegóły notatki";
 }
 
-<h1>Details</h1>
+<h1 class="oswald text-primary">Szczegółowe informacje</h1>
+<hr />
 
 <div>
-    <h4>Note</h4>
-    <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Content)
+            <hr />
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Content)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.AddedDate)
+            <hr />
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.AddedDate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Item)
+            Przedmiot:
+            <hr />
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Item.Content)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.User)
+            Autor notatki:
+            <hr />
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.User.Id)
+            @Html.DisplayFor(model => model.User.FullName)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.NoteId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.NoteId" class="btn btn-warning">Edycja notatki</a>
+    <a asp-action="Index" class="btn btn-light">Powrót do listy notatek</a>
 </div>
