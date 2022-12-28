@@ -1,0 +1,26 @@
+﻿@model Gospodarstwo.Models.Note
+
+ 
+<div class="row interspace">
+        <form asp-action="CreatePartial" asp-controller="Notes" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" id="ItemId" name="ItemId" value="@Model.ItemId" />
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <hr />
+                <input type="submit" value="Dodaj notatkę" class="btn btn-primary" />
+            <button type="button" data-bs-dismiss="modal" class="btn btn-light">
+                Powrót do tekstu
+            </button>
+            </div>
+        </form>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

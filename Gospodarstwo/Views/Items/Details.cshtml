@@ -55,10 +55,28 @@
                 }
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <a asp-action="Create" asp-controller="Notes" asp-route-id="@Model?.SelectedItem.ItemId" class="btn btn-success">Dodaj notatkę</a>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newNote">
+                        Dodaj notatkę
+                    </button>
                 }
 
             </section>
+
+            <!--Modal-->
+            <div class="modal fade" id="newNote" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5 oswald text-primary" id="exampleModalLabel">Dodawanie notatki</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <partial name="~/Views/Notes/CreatePartial.cshtml" model="@Model.NewNote" />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <section id="comments">
             @if (!User.Identity.IsAuthenticated)
@@ -95,4 +113,9 @@
         </section>
     </div>
 </article>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
 

@@ -9,6 +9,8 @@ namespace Gospodarstwo.Models.ViewModels
         public int CommentsNumber { get; set; }
         public int OpinionsNumber { get; set; }
         public string Description { get; set; }
+        public Note NewNote { get; set; }
+
 
         public ItemWithNotes()
         {

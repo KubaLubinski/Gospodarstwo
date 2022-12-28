@@ -108,6 +108,7 @@ namespace Gospodarstwo.Controllers
                 return NotFound();
             }
 
+            itemWithNotes.NewNote = new Note { ItemId = (int)id, Id = itemWithNotes.SelectedItem.Id };
             itemWithNotes.ReadingTime = (int)Math.Ceiling((double)itemWithNotes.SelectedItem.Content.Length / 1400);
             itemWithNotes.CommentsNumber = _context.Notes
                 .Where(x => x.ItemId == id)

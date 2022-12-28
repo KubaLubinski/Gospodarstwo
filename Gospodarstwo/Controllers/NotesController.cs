@@ -86,6 +86,27 @@ namespace Gospodarstwo.Controllers
             return View(note);
         }
 
+        // POST: Notes/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePartial([Bind("NoteId,Content,ItemId")] Note note)
+        {
+            if (ModelState.IsValid)
+            {
+                note.AddedDate = DateTime.Now;
+                note.Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                _context.Add(note);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Details", "Items", new { id = note.ItemId }, "comments");
+            }
+            ViewData["IdItem"] = note.ItemId;
+            ViewData["ItemName"] = note.Item.ItemName;
+            return RedirectToAction("Details", "Items", new { id = note.ItemId }, "comments");
+
+        }
+
         // GET: Notes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
