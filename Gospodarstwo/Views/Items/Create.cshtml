@@ -4,7 +4,12 @@
     ViewData["Title"] = "Dodawanie przedmiotu";
 }
 <h1 class="oswald text-primary">Dodawanie przedmiotu</h1>
-
+@{
+if (!String.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+<div class="alert alert-danger" role="alert"> @ViewBag.ErrorMessage </div>
+}
+}
 <hr />
 <div class="row">
     <div class="col-md-8 interspace">
