@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\graphic\" />
     <Folder Include="wwwroot\photo\mini\" />
   </ItemGroup>
 

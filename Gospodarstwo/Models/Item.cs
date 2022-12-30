@@ -50,6 +50,15 @@ namespace Gospodarstwo.Models
         [Display(Name = "Pojemność magazynu:")]
         public int MaxStoreCapacity { get; set; }
 
+        #region
+        [NotMapped]
+        [Display(Name = "Procent wypełnienia magazynu:")]
+        public double FillLevel
+        {
+            get { return (double)ItemQuantity / (double)MaxStoreCapacity * 100; }
+        }
+        #endregion
+
         [Display(Name = "Jednostka (Sposób zliczania):")]
         public int UnitId { get; set; }
         [ForeignKey("UnitId")]
