@@ -8,12 +8,22 @@
     <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
   <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="..." class="d-block w-100" alt="...">
+                <div class="card col-lg-12 col-md-6 text-center">
+                    <img src="~/photo/zboze.jpg" class="d-block w-100" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Moje Gospodarstwo</h5>
+                        <p class="card-text">
+                            Dodaj nowe przedmioty
+                        </p>
+                        <a href="@Url.Action("Create", "Items")" class="btn btn-primary">Dodaj >>></a>
+                    </div>
+                </div>
+
             </div>
             @foreach (var item in Model.Items)
             {
                 <div class="carousel-item">
-                <div class="card" style="width: 18rem;">
+                <div class="card col-lg-12 col-md-6 text-center">
                     <img src="..." class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">@item.ItemName</h5>
@@ -28,12 +38,14 @@
                             }
                             @if (item.MaxStoreCapacity > 0)
                             {
+                                    <h3>Poziom zapełnienia magazynu:</h3>
                                     <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: @item.FillLevel%"></div>
                                     </div>
                             }
                         </p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+
+                            <a href="@Url.Action("Details", "Items", new{id = item.ItemId})" class="btn btn-primary">Czytaj >>></a>
                     </div>
                 </div>
                 </div>

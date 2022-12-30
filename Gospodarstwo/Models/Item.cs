@@ -53,9 +53,9 @@ namespace Gospodarstwo.Models
         #region
         [NotMapped]
         [Display(Name = "Procent wypełnienia magazynu:")]
-        public double FillLevel
+        public int FillLevel
         {
-            get { return (double)ItemQuantity / (double)MaxStoreCapacity * 100; }
+            get { return (int)((double)ItemQuantity / (double)MaxStoreCapacity * 100); }
         }
         #endregion
 
