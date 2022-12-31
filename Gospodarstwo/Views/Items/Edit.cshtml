@@ -1,18 +1,26 @@
 ﻿@model Gospodarstwo.Models.Item
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edycja";
 }
 
-<h1>Edit</h1>
+<h1 class="oswald text-primary">Edycja</h1>
 
-<h4>Item</h4>
+@{
+    if(!String.IsNullOrEmpty(ViewBag.ErrorMessage))
+    {
+        <div class="alert alert-danger" role="alert">@ViewBag.ErrorMessage</div>
+    }
+}
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+    <div class="col-md-8 interspace">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ItemId" />
+            <input type="hidden" asp-for="Id" value="@ViewBag.Author">
+            <input type="hidden" asp-for="AddedDate" />
+            <input type="hidden" asp-for="Graphic" />
             <div class="form-group">
                 <label asp-for="ItemName" class="control-label"></label>
                 <input asp-for="ItemName" class="form-control" />
@@ -20,12 +28,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
+                <textarea asp-for="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Graphic" class="control-label"></label>
-                <input asp-for="Graphic" class="form-control" />
+                <br />
+                <img src="@Url.Content(Model.Graphic != null ? "~/img/mini/" + Model.Graphic :"~/img/mini/zboze_m.jpg")" width="150" />
+                <<input type="file" name="picture" id="picture" class="form-control" accept=".jpg,.gif,.png" />
                 <span asp-validation-for="Graphic" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -34,19 +44,9 @@
                 </label>
             </div>
             <div class="form-group">
-                <label asp-for="AddedDate" class="control-label"></label>
-                <input asp-for="AddedDate" class="form-control" />
-                <span asp-validation-for="AddedDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>
                 <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                 <span asp-validation-for="CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <select asp-for="Id" class="form-control" asp-items="ViewBag.Id"></select>
-                <span asp-validation-for="Id" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ItemQuantity" class="control-label"></label>
@@ -64,15 +64,14 @@
                 <span asp-validation-for="UnitId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
+                <a asp-action="Details" asp-route-id="@Model.ItemId" class="btn btn-light"> Powrót do tekstu </a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

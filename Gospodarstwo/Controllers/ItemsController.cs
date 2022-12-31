@@ -183,10 +183,19 @@ namespace Gospodarstwo.Controllers
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", item.CategoryId);
-            ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", item.UnitId);
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", item.Id);
-            return View(item);
+
+            if (string.Compare(User.FindFirstValue(ClaimTypes.NameIdentifier), item.Id) == 0 || User.IsInRole("admin"))
+            {
+                ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", item.CategoryId);
+                ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", item.UnitId);
+                ViewData["Author"] = item.Id;
+                return View(item);
+            }
+            else
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
         }
 
         // POST: Items/Edit/5
@@ -195,15 +204,32 @@ namespace Gospodarstwo.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin, author")]
-        public async Task<IActionResult> Edit(int id, [Bind("ItemId,ItemName,Content,Graphic,Active,AddedDate,CategoryId,Id,ItemQuantity,MaxStoreCapacity,UnitId")] Item item)
+        public async Task<IActionResult> Edit(int itemid, [Bind("ItemId,ItemName,Content,Graphic,Active,AddedDate,CategoryId,Id,ItemQuantity,MaxStoreCapacity,UnitId")] Item item, IFormFile? picture)
         {
-            if (id != item.ItemId)
+            if (itemid != item.ItemId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
+                if (picture != null && picture.Length > 0)
+                {
+                    ImageFileUpload imageFileResult = new(_hostEnvironment);
+                    FileSendResult fileSendResult = imageFileResult.SendFile(picture, "img", 600);
+                    if (fileSendResult.Success)
+                    {
+                        item.Graphic = fileSendResult.Name;
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Wybrany plik nie jest obrazkiem!";
+                        ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", item.CategoryId);
+                        ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", item.UnitId);
+                        ViewData["Author"] = item.Id;
+                        return View(item);
+                    }
+                }
                 try
                 {
                     _context.Update(item);
@@ -224,7 +250,7 @@ namespace Gospodarstwo.Controllers
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", item.CategoryId);
             ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", item.UnitId);
-            ViewData["Id"] = new SelectList(_context.AppUsers, "Id", "Id", item.Id);
+            ViewData["Author"] = item.Id;
             return View(item);
         }
 

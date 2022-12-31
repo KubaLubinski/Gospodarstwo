@@ -48,7 +48,7 @@ namespace Gospodarstwo.Infrastrukture
             using (var imgFile = Image.FromFile(path))
             {
                 var miniFile = imgFile.ScaleByWidth(width);
-                upload = Path.Combine(hostingEnvironment.WebRootPath,destination + "\\mini");
+                upload = Path.Combine(hostingEnvironment.WebRootPath, destination + "\\mini");
                 filePath = Path.Combine(upload, SendingFile.Name);
                 miniFile.SaveAs(filePath);
             
