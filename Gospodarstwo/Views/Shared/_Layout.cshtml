@@ -25,13 +25,14 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Items"
-                               asp-action="Index">Przedmioty</a>
-                        </li>
+                        
                         @{
                             if (User.IsInRole("admin") || User.IsInRole("author"))
                             {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Items"
+                               asp-action="Index">Przedmioty</a>
+                                </li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle text-dark" href="#" role="button"
                                    data-bs-toggle="dropdown" aria-expanded="false">
@@ -77,8 +78,11 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2022 - Gospodarstwo - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        <div class="container-fluid text-center pt-3">
+            @DateTime.Now.Year - Moje Gospodarstwo -
+            <p>
+                <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none">Polityka prywatności</a>
+            </p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

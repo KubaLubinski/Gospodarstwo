@@ -44,7 +44,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-4">
-                                <img src="@Url.Content(item.Graphic == null ? "~/img/mini/zboze_m.jpg" : "~/img/mini/zboze_m.jpg")" alt="@item.Category.CategoryName" class="img-fluid" />
+                                <img src="@Url.Content(item.Graphic == null ? "~/img/mini/zboze_m.jpg" : "~/img/mini/"+item.Graphic)" width="150" alt="@item.Category.CategoryName" class="img-fluid" />
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">

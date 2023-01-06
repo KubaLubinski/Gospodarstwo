@@ -5,30 +5,34 @@
 
 @if (User.IsInRole("admin") || User.IsInRole("author"))
 {
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-  <div class="carousel-inner">
+    <div id="carouselExampleAutoplaying" class="carousel carousel-dark slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
             <div class="carousel-item active">
-                <div class="card col-lg-12 col-md-6 text-center">
-                    <img src="~/photo/zboze.jpg" class="d-block w-100" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Moje Gospodarstwo</h5>
-                        <p class="card-text">
-                            Dodaj nowe przedmioty
-                        </p>
-                        <a href="@Url.Action("Create", "Items")" class="btn btn-primary">Dodaj >>></a>
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <img src="~/photo/zboze.jpg" class="d-block w-100 rounded" alt="...">
+                    </div>
+                    <div class="col-12 col-lg-4 text-center">
+               <h5>Moje Gospodarstwo</h5>
+               Dodaj nowe przedmioty
+               <hr/>
+               <a href="@Url.Action("Create", "Items")" class="btn btn-primary">Dodaj >>></a>
                     </div>
                 </div>
 
-            </div>
+        </div>
+
             @foreach (var item in Model.Items)
             {
                 <div class="carousel-item">
-                <div class="card col-xl-12 col-lg-8 col-md-6 text-center">
-                    <img src="~/img/@item.Graphic" class="card-img-top" alt="..." width="150">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.ItemName</h5>
-                        <p class="card-text">
-                            @if (item.Content.Length <= 130)
+                    <div class="row">
+                        <div class="col-12 col-lg-8">
+                            <img src="~/img/@item.Graphic" class="rounded d-block w-100" alt="...">
+                        </div>
+                        <div class="col-12 col-lg-4 text-center">
+                        <h5>@item.ItemName</h5>
+                        <!--<h3>Posiadane: item.ItemQuantity)</h3>-->
+                            @if (item.Content.Length <= 100)
                             {
                                 @Html.DisplayFor(modelItem => item.Content)
                             }
@@ -43,11 +47,11 @@
                                         <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: @item.FillLevel%"></div>
                                     </div>
                             }
-                        </p>
-
+                            <hr/>
                             <a href="@Url.Action("Details", "Items", new{id = item.ItemId})" class="btn btn-primary">Czytaj >>></a>
+                        </div>
                     </div>
-                </div>
+                
                 </div>
             }
   </div>
@@ -63,5 +67,14 @@
 }
 else
 {
-    <h1 class="primary">Zaloguj się aby zobaczyć więcej</h1>
+    <div class="container-fluid back">
+        <div class="row text-center col-10 offset-1 col-lg-8 offset-lg-2">
+            <div class="transparency mt-4">
+                <h1 class="oswald mt-3 info-title">Moje Gospodarstwo</h1>
+                <h4 class="info-desc">Zarejestruj się, aby zobaczyć więcej</h4>
+                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-warning btn-lg fst-italic mt-3 mb-4">Rejestracja</a>
+            </div>
+        </div>
+
+    </div>
 }

@@ -25,6 +25,7 @@ namespace Gospodarstwo.Controllers
                 .Where(c => c.Active == true && c.Display == true);
             homeData.Authors = _context.Items.Include(a => a.User).Select(a => a.User).Distinct();
             homeData.Items = _context.Items.Where(i => i.Active);
+            homeData.Units = _context.Units;
             return View(homeData);
         }
 
