@@ -5,7 +5,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace Gospodarstwo.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext <AppUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

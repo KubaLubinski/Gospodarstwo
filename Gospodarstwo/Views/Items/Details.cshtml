@@ -96,16 +96,16 @@
             {
                 foreach (var item in Model.SelectedItem.Notes.OrderByDescending(c => c.NoteId))
                 {
-                    <div class="d-flex shadow-sm px-3 py-1 mb-3 bg-body rounded">
-                        <div class="flex-shrink-0">
+                    <div class="d-flex shadow-sm px-3 py-1 mb-3 color1 tekst1">
+                        <div class="flex-shrink-0 color1 tekst1">`
                             <img src="~/photo/mini/@((item.User.Photo != null) ? @item.User.Photo :"user.png")" width="64" alt="Fotografia autora" class="rounded-circle">
                         </div>
-                        <div class="flex-grow-1 ms-3">
+                        <div class="flex-grow-1 ms-3 color1 tekst1">
                             <h6>
-                                <span class="fw-bold text-success">@item.User.FullName </span>
-                                <small class="text-secondary me-5"> dodano:@item.AddedDate.ToString("dd.MM.yyyy") </small>
+                                <span class="fw-bold tekst1">@item.User.FullName </span>
+                                <small class="text1 me-5"> dodano:@item.AddedDate.ToString("dd.MM.yyyy") </small>
                             </h6>
-                            <p class="smaller">@item.Content</p>
+                            <p class="smaller color1 tekst1">@item.Content</p>
                         </div>
                     </div>
 
