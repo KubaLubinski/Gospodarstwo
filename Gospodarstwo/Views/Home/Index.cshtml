@@ -42,10 +42,10 @@
                             }
                             @if (item.MaxStoreCapacity > 0 && item.CategoryId != 1)
                             {
-                                    <h3>Poziom zapełnienia magazynu:</h3>
-                                    <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                                        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: @item.FillLevel%"></div>
-                                    </div>
+                                <h3>Poziom zapełnienia magazynu:</h3>
+                                <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: @item.FillLevel%"></div>
+                                </div>
                             }
                             <hr/>
                             <a href="@Url.Action("Details", "Items", new{id = item.ItemId})" class="btn btn-primary">Czytaj >>></a>
@@ -71,8 +71,8 @@ else
         <div class="row text-center col-10 offset-1 col-lg-8 offset-lg-2">
             <div class="transparency mt-4">
                 <h1 class="oswald mt-3 info-title">Moje Gospodarstwo</h1>
-                <h4 class="info-desc">Zarejestruj się, aby zobaczyć więcej</h4>
-                <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-warning btn-lg fst-italic mt-3 mb-4">Rejestracja</a>
+                <h4 class="info-desc">Zaloguj się, aby zobaczyć więcej</h4>
+                <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-warning btn-lg fst-italic mt-3 mb-4">Rejestracja</a>
             </div>
         </div>
 

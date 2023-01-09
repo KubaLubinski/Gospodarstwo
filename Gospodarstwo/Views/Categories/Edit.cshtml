@@ -1,9 +1,7 @@
 ﻿@model Gospodarstwo.Models.Category
-
 @{
     ViewData["Title"] = "Edycja";
 }
-
 <h1>Edycja</h1>
 <hr />
 <div class="row">
@@ -41,7 +39,6 @@
 <div>
     <a asp-action="Index">Powrót do listy kategorii</a>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
