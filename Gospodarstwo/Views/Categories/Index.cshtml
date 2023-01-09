@@ -4,12 +4,12 @@
     ViewData["Title"] = "Kategorie";
 }
 
-<h1>Kategorie</h1>
+<h1 class="tekst2">Kategorie</h1>
 
 <p>
-    <a asp-action="Create">Stwórz nową kategorię</a>
+    <a asp-action="Create"class="tekst2">Stwórz nową kategorię</a>
 </p>
-<table class="table">
+<table class="table color1 tekst1">
     <thead>
         <tr>
             <th>
@@ -43,12 +43,12 @@
                 @Html.DisplayFor(modelItem => item.Display)
             </td>
             <td>
-                    <a class="btn btn-outline-primary rounded-circle my-1" title="Szczegóły" asp-action="Details" asp-route-id="@item.CategoryId"><i class="bi-eye" aria-label="Szczegóły kategorii"></i></a>
+                    <a class="btn btn-outline-success rounded-circle my-1" title="Szczegóły" asp-action="Details" asp-route-id="@item.CategoryId"><i class="bi-eye" aria-label="Szczegóły kategorii"></i></a>
                     @{
                         if (User.IsInRole("admin"))
                         {
                             <a class="btn btn-outline-warning rounded-circle my-1" title="Edycja" asp-action="Edit" asp-route-id="@item.CategoryId"><i class="bi-pen-fill" aria-label="Edycja kategorii"></i></a>
-                            <a class="btn btn-outline-danger rounded-circle my-1" title="Usuwanie" asp-action="Delete" asp-route-id="@item.CategoryId"><i class="bi-trash" aria-label="Usuń"></i></a>
+                            <a class="btn btn-outline-secondary rounded-circle my-1" title="Usuwanie" asp-action="Delete" asp-route-id="@item.CategoryId"><i class="bi-trash" aria-label="Usuń"></i></a>
                         }
                     }
             </td>

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Usuwanie";
 }
 
-<h1 class="oswald">Usuwanie</h1>
+<h1 class="oswald tekst2">Usuwanie</h1>
 
 @{
     if (!String.IsNullOrEmpty(ViewBag.DeleteMessage))
@@ -25,7 +25,7 @@
 
 <div>
     <hr />
-    <dl class="row">
+    <dl class="row color1 tekst1">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CategoryName)
         </dt>
@@ -60,6 +60,6 @@
                     <input type="submit" value="Usuń" class="btn btn-danger" />
                 }
             }
-        <a asp-action="Index">Powrót do listy kategorii</a>
+        <a asp-action="Index" class="btn btn-primary">Powrót do listy</a>
     </form>
 </div>

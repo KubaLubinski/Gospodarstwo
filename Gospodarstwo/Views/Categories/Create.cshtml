@@ -4,7 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1 class="oswald">Nowa kategoria</h1>
+<h1 class="oswald tekst2">Nowa kategoria</h1>
 
 @{
     if (!String.IsNullOrEmpty(ViewBag.ErrorMessage))
@@ -14,15 +14,15 @@
 }
 
 <div class="row">
-    <div class="col-md-4 interspace">
+    <div class="col-md-4 interspace color1 tekst1">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group ">
                 <label asp-for="CategoryName" class="control-label"></label>
                 <input asp-for="CategoryName" class="form-control" />
                 <span asp-validation-for="CategoryName" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group ">
                 <label asp-for="Description" class="control-label"></label>
                 <textarea asp-for="Description" class="form-control"></textarea>
                 <span asp-validation-for="Description" class="text-danger"></span>
@@ -38,15 +38,16 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Dodaj Kategorię" class="btn btn-primary" />
+                <input type="submit" value="Dodaj Kategorię" class="btn btn-warning" />
+            </div>
+            <div>
+                 <a asp-action="Index" class="btn btn-primary">Powrót do listy</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index" class="btn btn-light">Powrót do listy</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

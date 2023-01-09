@@ -4,11 +4,11 @@
     ViewData["Title"] = "Szczegóły notatki";
 }
 
-<h1 class="oswald text-primary">Szczegółowe informacje</h1>
+<h1 class="oswald tekst2">Szczegółowe informacje</h1>
 <hr />
 
 <div>
-    <dl class="row">
+    <dl class="row color1 tekst1">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Content)
             <hr />
@@ -41,5 +41,5 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.NoteId" class="btn btn-warning">Edycja notatki</a>
-    <a asp-action="Index" class="btn btn-light">Powrót do listy notatek</a>
+    <a asp-action="Index" class="btn btn-primary">Powrót do listy notatek</a>
 </div>

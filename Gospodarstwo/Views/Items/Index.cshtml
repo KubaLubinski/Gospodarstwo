@@ -8,12 +8,12 @@
         <!--wyszukiwarka-->
         <div class="d-none d-md-block col-md-12 col-xl-3">
             <div class="card mt-2 shadow-sm">
-                <div class="card-body">
+                <div class="card-body color2">
                     @using(Html.BeginForm("Index", "Items", new { PageNumber = "1" }, FormMethod.Get))
                     {
-                        <div class="row gt-3">
-                            <div class="form-group col-auto">
-                                <label for="Kategoria">Kategoria:</label>
+                        <div class="row gt-3 color1 tekst1">
+                            <div class="form-group col-auto ">
+                                <label for="Kategoria" >Kategoria:</label>
                                 @Html.DropDownList("Kategoria", ViewBag.Category, "---wszystkie---",htmlAttributes: new{@class = "form-control"})
                             </div>
                             <div class="form-group col-auto">
@@ -24,7 +24,7 @@
                                 <label for="Fraza">Fraza:</label>
                                 <input type="text" class="form-control" id="Fraza" name="Fraza" placeholder="Szukany ciąg" value="@Model.ItemsView.Phrase">
                             </div>
-                            <button type="submit" class="btn btn-primary mt-4 col-auto">Filtruj</button>
+                            <button type="submit" class="btn btn-danger mt-4 col-auto tekst1">Filtruj</button>
                         </div>
                     }
                 </div>
@@ -38,9 +38,9 @@
             {
                 @foreach (var item in Model.Items)
                 {
-                    <div class="card">
+                    <div class="card color1">
                         <div class="card-header">
-                            <h4 class="oswald text-primary">@item.ItemName</h4>
+                            <h4 class="oswald  tekst1">@item.ItemName</h4>
                         </div>
                         <div class="row">
                             <div class="col-md-4">
@@ -48,10 +48,10 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="card-body">
-                                    <h5 class="card-title text-success">@item.User.FullName</h5>
-                                    <p class="card-text"><small class="text-muted">Opublikowano: @item.AddedDate</small></p>
+                                    <h5 class="card-title tekst1">@item.User.FullName</h5>
+                                    <p class="card-text"><small class="tekst1">Opublikowano: @item.AddedDate</small></p>
                                     <div class="position-relative">
-                                        <a href="@Url.Action("Details", "Items", new{id = item.ItemId})" class="btn btn-outline-primary position-absolute bottom-0 end-0">Czytaj >>></a>
+                                        <a href="@Url.Action("Details", "Items", new{id = item.ItemId})" class="btn btn-outline-danger position-absolute bottom-0 end-0 tekst1">Czytaj >>></a>
                                     </div>
                                 </div>
                             </div>
@@ -82,21 +82,21 @@
                     if(Model.ItemsView.PageNumber > 1)
                     {
                                     <li class="page-item">
-                                        <a class="page-link" href="@Url.Action("Index", "Items", new{PageNumber = Model.ItemsView.PageNumber - 1,
+                                        <a class="page-link color1 tekst1" href="@Url.Action("Index", "Items", new{PageNumber = Model.ItemsView.PageNumber - 1,
                                     Kategoria = Model.ItemsView.Category, Autor = Model.ItemsView.Author, Fraza = Model.ItemsView.Phrase})">Poprzednia</a>"
                                     </li>
                     }
                     for (var i = 1; i<=Model.ItemsView.PageCount; i++)
                     {
                                 <li class="@(i == Model.ItemsView.PageNumber ? "page-item active" : "page-active")">
-                                    <a class="page-link" href="@Url.Action("Index", "Items", new{PageNumber = 1, 
+                                    <a class="page-link color1 tekst1" href="@Url.Action("Index", "Items", new{PageNumber = 1, 
                                 Kategoria = Model.ItemsView.Category, Autor = Model.ItemsView.Author, Fraza = Model.ItemsView.Phrase})">@i</a>
                                 </li>
                     }
                     if(Model.ItemsView.PageNumber < Model.ItemsView.PageCount)
                     {
                                 <li class="page-item">
-                                    <a class="page-link" href="@Url.Action("Index", "Items", new{PageNumber = Model.ItemsView.PageNumber + 1, 
+                                    <a class="page-link color1 tekst1" href="@Url.Action("Index", "Items", new{PageNumber = Model.ItemsView.PageNumber + 1, 
                                 Kategoria = Model.ItemsView.Category, Autor = Model.ItemsView.Author, Fraza = Model.ItemsView.Phrase})">Następna</a>
                                 </li>
                     }

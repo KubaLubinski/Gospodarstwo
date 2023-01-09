@@ -1,7 +1,7 @@
 ﻿@model Gospodarstwo.Models.Note
 
  
-<div class="row interspace">
+<div class="row interspace color1 tekst1">
         <form asp-action="CreatePartial" asp-controller="Notes" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" id="ItemId" name="ItemId" value="@Model.ItemId" />
@@ -12,8 +12,8 @@
             </div>
             <div class="form-group">
                 <hr />
-                <input type="submit" value="Dodaj notatkę" class="btn btn-primary" />
-            <button type="button" data-bs-dismiss="modal" class="btn btn-light">
+                <input type="submit" value="Dodaj notatkę" class="btn btn-warning" />
+            <button type="button" data-bs-dismiss="modal" class="btn btn-primary">
                 Powrót do tekstu
             </button>
             </div>
