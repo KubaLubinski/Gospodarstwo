@@ -4,9 +4,9 @@
     ViewData["Title"] = "Lista przedmiotów";
 }
 
-<h1 class="oswald text-primary">Przedmioty</h1>
+<h1 class="oswald color1 tekst1">Przedmioty</h1>
 
-<table class="table" id="przedmioty">
+<table class="table color1 tekst1" id="przedmioty">
     <thead>
         <tr>
             <th>
@@ -89,6 +89,7 @@
                     <a class="btn btn-outline-warning rounded-circle my-1" title="Edycja" asp-action="Edit" asp-route-id="@item.ItemId"><i class="bi-pen-fill" arialabel="Edycja tekstu"></i></a>
                     <a class="btn btn-outline-danger rounded-circle my-1" title="Usuwanie" asp-action="Delete" asp-route-id="@item.ItemId"><i class="bi-trash" arialabel="Usuwanie tekstu"></i></a>
                     <a class="btn btn-outline-info rounded-circle my-1" title="Notatki" asp-action="Index" asp-controller="Notes" asp-route-id="@item.ItemId"><i class="bi-chat-left-text" aria-label="Notatki na temat produktu"></i></a>
+                    
             </td>
         </tr>
 }

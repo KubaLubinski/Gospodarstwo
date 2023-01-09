@@ -4,10 +4,10 @@
     ViewData["Title"] = "Edycja notatki";
 }
 
-<h1>Edycja Notatki</h1>
+<h1 class="tekst2">Edycja Notatki</h1>
 
 <hr />
-<div class="row">
+<div class="row color1 tekst1">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -37,9 +37,8 @@
                     </dd>
             </div>
             <div class="form-group">
-                 <input type="submit" value="Zapisz zmiany" class="btn btn-primary" />
-                <a asp-action="Index" asp-route-id="@Model.NoteId">
-                Powrót do notatek</a>
+                 <input type="submit" value="Zapisz zmiany" class="btn btn-warning" />
+                <a asp-action="Index" class="btn btn-primary">Powrót do listy notatek</a>
             </div>
         </form>
     </div>

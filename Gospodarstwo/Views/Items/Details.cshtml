@@ -6,10 +6,10 @@
 }
 
 <article>
-    <h1 class="oswald text-primary text-center">@Model.SelectedItem.ItemName</h1>
-    <div class="row">
+    <h1 class="oswald text-center tekst2">@Model.SelectedItem.ItemName</h1>
+    <div class="row color1 tekst1">
         <section class="col-lg-3 mt-3">
-            <div class="row">
+            <div class="row ">
                 <!--imię i nazwisko autora oraz data dodania-->
                 <div class="col-6 col-lg-12">
                     <h6>
@@ -48,11 +48,12 @@
         </section>
         <div class="col-lg-9 offset-lg-3">
             <section class="mb-3">
-                <a asp-action="Index" class="btn btn-primary">Lista tekstów</a>
+                
                 @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.SelectedItem.Id)
                 {
                     <a asp-action="Edit" asp-route-id="@Model?.SelectedItem.ItemId" class="btn btn-warning">Edycja tekstu</a>
                 }
+                <a asp-action="Index" class="btn btn-primary">Lista tekstów</a>
                 @if (User.Identity.IsAuthenticated)
                 {
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newNote">

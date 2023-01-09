@@ -1,16 +1,15 @@
 ﻿@model Gospodarstwo.Models.Item
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Usuwanie";
 }
 
-<h1>Delete</h1>
+<h1 class="tekst2">Usuwanie</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3 class="tekst2">Jesteś pewny, że chcesz usunąć przedmiot?</h3>
 <div>
-    <h4>Item</h4>
-    <hr />
-    <dl class="row">
+
+    <dl class="row color1 tekst1">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ItemName)
         </dt>
@@ -76,6 +75,6 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="ItemId" />
         <input type="submit" value="Usuń" class="btn btn-danger" /> |
-        <a asp-action="Index">Powrót do listy</a>
+          <a asp-action="Index" class="btn btn-primary">Lista tekstów</a>
     </form>
 </div>
