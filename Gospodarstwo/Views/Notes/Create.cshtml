@@ -4,10 +4,10 @@
     ViewData["Title"] = "Dodawanie notatki";
 }
 
-<h1 class="oswald text-primary">Dodawanie notatki</h1>
+<h1 class="oswald tekst2">Dodawanie notatki</h1>
 <hr />
 
-<div class="row">
+<div class="row ">
     <div class="col-md-6 interspace">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -18,8 +18,8 @@
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Dodaj notatkę" class="btn btn-primary" />
-                <a asp-controller="Items" asp-action="Details" asp-route-id=@ViewData["IdItem"] class="btn btn-light">Powrót do opisu przedmiotu</a>
+                <input type="submit" value="Dodaj notatkę" class="btn btn-warning" />
+                <a asp-controller="Items" asp-action="Details" asp-route-id=@ViewData["IdItem"] class="btn btn-primary">Powrót do opisu przedmiotu</a>
             </div>
         </form>
     </div>

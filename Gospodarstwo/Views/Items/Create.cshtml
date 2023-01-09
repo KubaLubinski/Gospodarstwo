@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Dodawanie przedmiotu";
 }
-<h1 class="oswald text-primary">Dodawanie przedmiotu</h1>
+<h1 class="oswald tekst2">Dodawanie przedmiotu</h1>
 
 @{
     if (!String.IsNullOrEmpty(ViewBag.ErrorMessage))
@@ -11,8 +11,7 @@
         <div class="alert alert-danger" role="alert">@ViewBag.ErrorMessage</div>
     }
 }
-<hr />
-<div class="row">
+<div class="row color1 tekst1">
     <div class="col-md-8 interspace">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -57,7 +56,7 @@
                 <select asp-for="UnitId" class ="form-control" asp-items="ViewBag.UnitId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Utwórz" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
                 <a asp-action="Index" class="btn btn-light">Powrót do listy</a>
             </div>
         </form>
