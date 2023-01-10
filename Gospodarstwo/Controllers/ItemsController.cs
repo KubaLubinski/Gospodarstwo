@@ -154,15 +154,26 @@ namespace Gospodarstwo.Controllers
                     else
                     {
                         ViewBag.ErrorMessage = "Wybrany plik nie jest obrazkiem!";
-                        ViewData["CategoryId"] = new SelectList(_context.Categories,"CategoryId", "Name", item.CategoryId);
+                        ViewData["CategoryId"] = new SelectList(_context.Categories,"CategoryId", "CategoryName", item.CategoryId);
+                        ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", item.UnitId);
                         return View(item);
                     }
+
                 }
 
-
-                _context.Add(item);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (!ItemNameExist(item.ItemName))
+                {
+                    _context.Add(item);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Przedmiot o takiej nazwie już istnieje!";
+                    ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", item.CategoryId);
+                    ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", item.UnitId);
+                    return View(item);
+                }
             }
             ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", item.CategoryId);
             ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", item.UnitId);
@@ -229,6 +240,18 @@ namespace Gospodarstwo.Controllers
                         ViewData["Author"] = item.Id;
                         return View(item);
                     }
+                }
+                if (!ItemNameExist(item.ItemName))
+                {
+
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Przedmiot o takiej nazwie już istnieje!";
+                    ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", item.CategoryId);
+                    ViewData["UnitId"] = new SelectList(_context.Units, "UnitId", "UnitName", item.UnitId);
+                    ViewData["Author"] = item.Id; ;
+                    return View(item);
                 }
                 try
                 {
@@ -299,6 +322,11 @@ namespace Gospodarstwo.Controllers
         private bool ItemExists(int id)
         {
           return _context.Items.Any(e => e.ItemId == id);
+        }
+
+        private bool ItemNameExist(string? name)
+        {
+            return (_context.Items?.Any(e => e.ItemName == name)).GetValueOrDefault();
         }
     }
 }
