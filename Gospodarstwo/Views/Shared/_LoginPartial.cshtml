@@ -13,12 +13,16 @@
             <button  type="submit" class="nav-link btn btn-link tekst1">Wyloguj</button>
         </form>
     </li>
-}
-else
-{
+       @if (User.IsInRole("admin"))
+     {
     <li class="nav-item">
         <a class="nav-link tekst1" asp-area="Identity" asp-page="/Account/Register">Rejestracja</a>
     </li>
+     }
+}
+else
+{
+     
     <li class="nav-item">
         <a class="nav-link tekst1" asp-area="Identity" asp-page="/Account/Login">Logowanie</a>
     </li>
