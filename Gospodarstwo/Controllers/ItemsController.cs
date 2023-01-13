@@ -15,6 +15,7 @@ using Gospodarstwo.Infrastrukture;
 
 namespace Gospodarstwo.Controllers
 {
+    [Authorize(Roles = "admin, author")]
     public class ItemsController : Controller
     {
         private readonly ApplicationDbContext _context;

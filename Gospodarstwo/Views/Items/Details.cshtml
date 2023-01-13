@@ -51,9 +51,9 @@
                 
                 @if (User.FindFirstValue(ClaimTypes.NameIdentifier) == Model.SelectedItem.Id)
                 {
-                    <a asp-action="Edit" asp-route-id="@Model?.SelectedItem.ItemId" class="btn btn-warning">Edycja tekstu</a>
+                    <a asp-action="Edit" asp-route-id="@Model?.SelectedItem.ItemId" class="btn btn-warning">Edycja przedmiotu</a>
                 }
-                <a asp-action="Index" class="btn btn-primary">Lista tekstów</a>
+                <a asp-action="Index" class="btn btn-primary">Lista przedmiotów</a>
                 @if (User.Identity.IsAuthenticated)
                 {
                     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newNote">
