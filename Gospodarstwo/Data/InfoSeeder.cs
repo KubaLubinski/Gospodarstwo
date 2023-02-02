@@ -29,8 +29,8 @@ namespace Info.Data
                     SeedUsers(dbContext);
                     SeedCategoris(dbContext);
                     SeedUnits(dbContext);
-                    SeedOpinions(dbContext);
                     SeedTexts(dbContext);
+                    SeedOpinions(dbContext);
 
                 }
         }

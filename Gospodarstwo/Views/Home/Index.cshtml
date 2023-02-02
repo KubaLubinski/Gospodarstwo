@@ -27,7 +27,7 @@
                 <div class="carousel-item">
                     <div class="row">
                         <div class="col-12 col-lg-8">
-                            <img src="~/img/@item.Graphic" class="rounded d-block w-100" alt="...">
+                            <img src="@Url.Content(item.Graphic == null ? "~/photo/zboze2.jpg" :"~/img/"+item.Graphic)" class="rounded d-block w-100" />
                         </div>
                         <div class="col-12 col-lg-4 text-center">
                         <h5>@item.ItemName</h5>
